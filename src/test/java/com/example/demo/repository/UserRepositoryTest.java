@@ -43,7 +43,7 @@ public class UserRepositoryTest {
     void findByEmailAndStatus_로_유저_데이터를_찾아올_수_있다(){
         // given
         // when
-        Optional<UserEntity> result = userRepository.findByEmailAndStatus("abc@gamil.com", UserStatus.ACTIVE);
+        Optional<UserEntity> result = userRepository.findByEmailAndStatus("kok202@naver.com", UserStatus.ACTIVE);
 
         // then
         assertThat(result.isPresent()).isTrue();
