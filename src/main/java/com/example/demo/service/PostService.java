@@ -18,7 +18,8 @@ public class PostService {
     private final UserService userService;
 
     public PostEntity getById(long id) {
-        return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Posts", id));
+        return postRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Posts", id));
     }
 
     public PostEntity create(PostCreateDto postCreateDto) {
