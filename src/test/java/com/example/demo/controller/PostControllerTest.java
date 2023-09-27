@@ -35,7 +35,7 @@ class PostControllerTest {
         // given
         // when
         // then
-        mockMvc.perform(post("/api/posts/1"))
+        mockMvc.perform(get("/api/posts/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.content").value("helloworld"))
