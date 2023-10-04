@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest(showSql = true)
 @TestPropertySource("classpath:test-application.properties")
 @Sql("/sql/user-repository-test-data.sql") // 테스트 전에 값을 미리 준비해서 테스트할 때 준비된 값을 사용
-public class UserJpaRepositoryTest {
+public class UserEntityJpaRepositoryTest {
 
     @Autowired
     private UserJpaRepository userJpaRepository;
