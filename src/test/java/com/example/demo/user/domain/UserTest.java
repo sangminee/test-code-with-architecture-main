@@ -52,12 +52,12 @@ public class UserTest {
         user = user.update(userUpdate);
 
         //then
-        assertThat(user.getId()).isNull();
+        assertThat(user.getId()).isEqualTo(1L);
         assertThat(user.getEmail()).isEqualTo("kok202@kakao.com");
         assertThat(user.getNickname()).isEqualTo("kok202-k");
         assertThat(user.getAddress()).isEqualTo("Pangyo");
         assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
-        assertThat(user.getCertificationCode()).isEqualTo(100L);
+        assertThat(user.getLastLoginAt()).isEqualTo(100L);
         assertThat(user.getCertificationCode()).isEqualTo("aaaaa-aaaaa-aaaaaa-aaaaaaaaaaaab");
     }
 
