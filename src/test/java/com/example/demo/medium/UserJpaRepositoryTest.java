@@ -1,6 +1,8 @@
-package com.example.demo.user.infrastructure;
+package com.example.demo.medium;
 
 import com.example.demo.user.domain.UserStatus;
+import com.example.demo.user.infrastructure.UserEntity;
+import com.example.demo.user.infrastructure.UserJpaRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest(showSql = true)
 @TestPropertySource("classpath:test-application.properties")
 @Sql("/sql/user-repository-test-data.sql") // 테스트 전에 값을 미리 준비해서 테스트할 때 준비된 값을 사용
-public class UserEntityJpaRepositoryTest {
+public class UserJpaRepositoryTest {
 
     @Autowired
     private UserJpaRepository userJpaRepository;

@@ -2,11 +2,15 @@ package com.example.demo.user.service;
 
 import com.example.demo.common.domain.exception.CertificationCodeNotMatchedException;
 import com.example.demo.common.domain.exception.ResourceNotFoundException;
+import com.example.demo.mock.FakeMailSender;
+import com.example.demo.mock.FakeUserRepository;
+import com.example.demo.mock.TestClockHolder;
+import com.example.demo.mock.TestUuidHolder;
 import com.example.demo.user.domain.User;
-import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserCreate;
+import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserUpdate;
-import com.example.demo.user.infrastructure.UserEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +27,40 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest // 스프링 부트의 의존성을 받는 
-@TestPropertySource("classpath:test-application.properties")
-@SqlGroup({
-        @Sql(value = "/sql/user-service-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
-})
-public class UserEntityServiceTest {
+public class UserServiceTest {
 
-    @Autowired
     private UserService userService;
-    @MockBean
-    private JavaMailSender mailSender;
+
+    @BeforeEach
+    void init(){
+        FakeMailSender fakeMailSender = new FakeMailSender();
+        FakeUserRepository fakeRepository = new FakeUserRepository();
+        this.userService = UserService.builder()
+                .uuidHolder(new TestUuidHolder("aaa-aaa-aaa-aaa-aaa"))
+                .clockHolder(new TestClockHolder(1234567))
+                .userRepository(fakeRepository)
+                .certificationService(new CertificationService(fakeMailSender))
+                .build();
+
+        fakeRepository.save(User.builder()
+                        .id(1L)
+                        .email("kok202@naver.com")
+                        .nickname("kok202")
+                        .address("Seoul")
+                        .certificationCode("aaa-aaa-aaa-aaa-aaa")
+                        .status(UserStatus.ACTIVE)
+                        .lastLoginAt(0L)
+                .build());
+        fakeRepository.save(User.builder()
+                .id(2L)
+                .email("kok303@naver.com")
+                .nickname("kok303")
+                .address("Seoul")
+                .certificationCode("aaa-aaa-aaa-aaa-aab")
+                .status(UserStatus.PENDING)
+                .lastLoginAt(0L)
+                .build());
+    }
 
     @Test
     void getByEmail은_ACTIVE_상태인_유저를_찾아올_수_있다(){
@@ -89,15 +115,12 @@ public class UserEntityServiceTest {
                 .nickname("kok202-k")
                 .build();
 
-            // 외부 의존성을 가짜(mock)로 대처하는 방법 중 하나임. 실제 메일 전송 x
-        BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
-
         // when
         User result = userService.create(userCreate);
         // then
         assertThat(result.getId()).isNotNull();
         assertThat(result.getStatus()).isEqualTo(UserStatus.PENDING);
-        // assertThat(result.getCertificationCode()).isEqualTo(UserStatus.PENDING);
+         assertThat(result.getCertificationCode()).isEqualTo("aaa-aaa-aaa-aaa-aaa");
     }
 
     @Test
@@ -126,7 +149,7 @@ public class UserEntityServiceTest {
 
         // then
         User user = userService.getById(1);
-        assertThat(user.getLastLoginAt()).isGreaterThan(0L);
+        assertThat(user.getLastLoginAt()).isEqualTo(1234567);
     }
 
     @Test
