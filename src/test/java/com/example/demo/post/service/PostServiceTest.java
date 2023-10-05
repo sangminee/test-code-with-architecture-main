@@ -10,25 +10,19 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class PostServiceTest {
 
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @BeforeEach
     void init(){
         FakePostRepository fakePostRepository = new FakePostRepository();
         FakeUserRepository fakeUserRepository = new FakeUserRepository();
 
-        this.postService = PostService.builder()
+        this.postService = PostServiceImpl.builder()
                 .postRepository(fakePostRepository)
                 .userRepository(fakeUserRepository) // 테스트를 짜는 것이 귀찮으면 위존성을 줄여라
                 .clockHolder(new TestClockHolder(13513515L))

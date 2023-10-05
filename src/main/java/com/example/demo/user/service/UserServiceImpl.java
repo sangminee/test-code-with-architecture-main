@@ -3,6 +3,7 @@ package com.example.demo.user.service;
 import com.example.demo.common.domain.exception.ResourceNotFoundException;
 import com.example.demo.common.service.post.ClockHolder;
 import com.example.demo.common.service.post.UuidHolder;
+import com.example.demo.user.controller.port.*;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import com.example.demo.user.domain.UserCreate;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Builder
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserCreateService, UserReadService, UserUpdateService, AuthenticationService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
