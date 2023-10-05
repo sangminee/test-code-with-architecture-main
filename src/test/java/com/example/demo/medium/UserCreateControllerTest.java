@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SqlGroup({
         @Sql(value = "/sql/delete-all-data.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 })
-class UserEntityCreateControllerTest {
+class UserCreateControllerTest {
     // mockMvc : 컨트롤러 테스트를 위해서 사용, API 테스트 하는데 많이 사용되는 도구임
 
     @Autowired
